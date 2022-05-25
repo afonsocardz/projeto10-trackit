@@ -1,11 +1,26 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Header from "./components/layouts/Header";
+import Menu from "./components/layouts/Menu";
+import Habities from "./pages/Habities";
+import History from "./pages/History";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Today from "./pages/Today";
+import "./assets/styles/reset.css";
+import "./assets/styles/style.css";
 
 export default function App() {
     return (
         <BrowserRouter>
+            <Header />
             <Routes>
-                <Route />
+                <Route path={"/"} element={<Login />} />
+                <Route path={"/cadastro"} element={<Register />} />
+                <Route path={"/hoje"} element={<Today />} />
+                <Route path={"/habitos"} element={<Habities />} />
+                <Route path={"/historico"} element={<History />} />
             </Routes>
+            <Menu />
         </BrowserRouter>
     );
 }
