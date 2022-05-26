@@ -1,16 +1,25 @@
 import styled from "styled-components";
+import { useUserContext } from "../../contexts/UserContext";
 
 export default function Header() {
+
+    const { user } = useUserContext();
+
     return (
-        <Header>
+        <Topbar>
             <span>TrackIt</span>
-        </Header>
+            <div>
+                {user}
+            </div>
+        </Topbar>
     );
 }
 
-const Header = styled.header`
+const Topbar = styled.header`
     width: 100%;
     position: fixed;
+    top: 0;
+    left: 0;
     display: flex;
     padding: 8px;
     justify-content: space-between;

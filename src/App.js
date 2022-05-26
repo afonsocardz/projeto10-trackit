@@ -8,19 +8,29 @@ import Register from "./pages/Register";
 import Today from "./pages/Today";
 import "./assets/styles/reset.css";
 import "./assets/styles/style.css";
+import UserContextProvider from "./contexts/UserContext";
+import LoadingContextProvider from "./contexts/LoadingContext";
+import Frame from "./components/styles/Frame";
+
 
 export default function App() {
     return (
         <BrowserRouter>
-            <Header />
-            <Routes>
-                <Route path={"/"} element={<Login />} />
-                <Route path={"/cadastro"} element={<Register />} />
-                <Route path={"/hoje"} element={<Today />} />
-                <Route path={"/habitos"} element={<Habities />} />
-                <Route path={"/historico"} element={<History />} />
-            </Routes>
-            <Menu />
+            <LoadingContextProvider>
+                <UserContextProvider>
+                    <Header />
+                    <Frame>
+                        <Routes>
+                            <Route path={"/"} element={<Login />} />
+                            <Route path={"/cadastro"} element={<Register />} />
+                            <Route path={"/hoje"} element={<Today />} />
+                            <Route path={"/habitos"} element={<Habities />} />
+                            <Route path={"/historico"} element={<History />} />
+                        </Routes>
+                    </Frame>
+                    <Menu />
+                </UserContextProvider>
+            </LoadingContextProvider>
         </BrowserRouter>
     );
 }
