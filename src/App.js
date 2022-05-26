@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/layouts/Header";
 import Menu from "./components/layouts/Menu";
-import Habities from "./pages/Habities";
+import Habits from "./pages/Habits";
 import History from "./pages/History";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,7 +24,7 @@ export default function App() {
                             <Route path={"/"} element={<Login />} />
                             <Route path={"/cadastro"} element={<Register />} />
                             <Route path={"/hoje"} element={<Today />} />
-                            <Route path={"/habitos"} element={<Habities />} />
+                            <Route path={"/habitos"} element={<Habits />} />
                             <Route path={"/historico"} element={<History />} />
                         </Routes>
                     </Frame>

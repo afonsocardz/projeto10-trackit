@@ -1,4 +1,4 @@
-export default function Habities() {
+export default function Habits() {
     return (
         <>habitos</>
     );

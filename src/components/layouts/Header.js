@@ -8,23 +8,22 @@ export default function Header() {
     return (
         <Topbar>
             <span>TrackIt</span>
-            <div>
-                {user}
-            </div>
+            {!user.isLogged ? <></> : <img src={user.image} alt={"Profile Avatar"}/>}
         </Topbar>
     );
 }
 
 const Topbar = styled.header`
     width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
+    height: 84px;
     display: flex;
-    padding: 8px;
     justify-content: space-between;
     align-items: center;
-    height: 84px;
+    position: fixed;
+    top: 0;
+    left: 0; 
+    padding: 8px;    
     font-size: 34px;
     background-color: blue;
+    color: white;
 `;

@@ -1,9 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../contexts/UserContext";
 import API from "../API";
 import Input from "../components/styles/Input";
-import { useUserContext } from "../contexts/UserContext";
+import Container from "../components/styles/Container";
+import Button from "../components/styles/Button";
+
+
 
 export default function Login() {
     const { setUser, setStatus } = useUserContext();
@@ -43,9 +47,11 @@ export default function Login() {
     return (
         <>
             <form onSubmit={handleLogin}>
-                <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-                <Input value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button>Logar</button>
+                <Container>
+                    <Input value={email} placeholder={"E-mail"} onChange={(e) => setEmail(e.target.value)} />
+                    <Input value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
+                    <Button width={'200px'} height={"25px"}>Logar</Button>
+                </Container>
             </form>
         </>
     );
