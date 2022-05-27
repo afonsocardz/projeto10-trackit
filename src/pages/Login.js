@@ -22,7 +22,7 @@ export default function Login() {
             email,
             password
         };
-        const promise = axios.post(API, body);
+        const promise = axios.post(`${API}/auth/login`, body);
         setStatus(true);
         promise.then(res => {
             const { data } = res;

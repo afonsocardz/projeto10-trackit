@@ -8,10 +8,28 @@ export default function Header() {
     return (
         <Topbar>
             <span>TrackIt</span>
-            {!user.isLogged ? <></> : <img src={user.image} alt={"Profile Avatar"}/>}
+            {!user.isLogged ? <></> :
+                <AvatarContainer>
+                    <Avatar src={user.image} alt={"Profile Avatar"} />
+                </AvatarContainer>}
         </Topbar>
     );
 }
+
+const AvatarContainer = styled.div`
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+`;
+
+const Avatar = styled.img`
+    object-fit: contain;
+    width: auto;
+    height: 100%;
+`;
 
 const Topbar = styled.header`
     width: 100%;

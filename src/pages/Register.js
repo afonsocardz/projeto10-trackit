@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../API";
+import Button from "../components/styles/Button";
+import Container from "../components/styles/Container";
 import Input from "../components/styles/Input";
 import { useUserContext } from "../contexts/UserContext";
 
@@ -22,11 +24,11 @@ export default function Register() {
             image,
             password
         };
-        const promise = axios.post(API, body);
+        const promise = axios.post(`${API}/auth/sign-up`, body);
         setStatus(true);
         promise.then(res => {
             const { data } = res;
-            console.log(data);  
+            console.log(data);
             setStatus(false);
             navigate("/");
         }).catch(err => {
@@ -37,11 +39,13 @@ export default function Register() {
     return (
         <>
             <form onSubmit={handleRegister}>
-                <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-                <Input value={password} onChange={(e) => setPassword(e.target.value)} />
-                <Input value={name} onChange={(e) => setName(e.target.value)} />
-                <Input value={image} onChange={(e) => setImage(e.target.value)} />
-                <button loadingStatus={status}>Registrar</button>
+                <Container>
+                    <Input value={email} placeholder={"Email"} onChange={(e) => setEmail(e.target.value)} />
+                    <Input value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
+                    <Input value={name} placeholder={"Nome"} onChange={(e) => setName(e.target.value)} />
+                    <Input value={image} placeholder={"Imagem"} onChange={(e) => setImage(e.target.value)} />
+                    <Button width={"200px"} height={"24px"}>Registrar</Button>
+                </Container>
             </form>
         </>
     );
