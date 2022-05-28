@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../API";
+import MainLogo from "../components/MainLogo";
 import Button from "../components/styles/Button";
 import Container from "../components/styles/Container";
 import Input from "../components/styles/Input";
@@ -40,6 +41,7 @@ export default function Register() {
         <>
             <form onSubmit={handleRegister}>
                 <Container>
+                    <MainLogo/>
                     <Input value={email} placeholder={"Email"} onChange={(e) => setEmail(e.target.value)} />
                     <Input value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
                     <Input value={name} placeholder={"Nome"} onChange={(e) => setName(e.target.value)} />

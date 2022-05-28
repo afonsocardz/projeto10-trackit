@@ -4,22 +4,28 @@ import { useUserContext } from "../../contexts/UserContext";
 export default function Header() {
 
     const { user } = useUserContext();
+    console.log(user);
 
     return (
-        <Topbar>
-            <span>TrackIt</span>
-            {!user.isLogged ? <></> :
-                <AvatarContainer>
-                    <Avatar src={user.image} alt={"Profile Avatar"} />
-                </AvatarContainer>}
-        </Topbar>
+        <> {
+            user &&
+            <Topbar>
+                <Logo>TrackIt</Logo>
+                {!user ? <></> :
+                    <AvatarContainer>
+                        <Avatar src={user.image} alt={"Profile Avatar"} />
+                    </AvatarContainer>}
+            </Topbar>
+        }
+
+        </>
     );
 }
 
 const AvatarContainer = styled.div`
     overflow: hidden;
-    width: 50px;
-    height: 50px;
+    width: 51px;
+    height: 51px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -45,3 +51,10 @@ const Topbar = styled.header`
     background-color: blue;
     color: white;
 `;
+
+const Logo = styled.span`
+    font-size: 40px;
+    color: white;
+    font-family: 'Playball', cursive;
+`;
+

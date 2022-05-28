@@ -6,8 +6,6 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
-    border-radius: 12px;
 `;
 
 export default Container;

@@ -1,24 +1,17 @@
-import { createContext, useState, useContext } from "react";
-import { useLoadingContext } from "./LoadingContext";
-
+import { createContext, useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
 export const useUserContext = () => useContext(UserContext);
 
-const userObj = {
-    isLogged: false,
-    habits:[],
-    today:[],
-    history:[],
-};
+export default function UserContextProvider({ children }) {
 
-export default function UserContextProvider({children}) {
-    const [user, setUser] = useState(userObj);
-    const {status, setStatus} = useLoadingContext();
-    
+    const localUser = JSON.parse(localStorage.getItem("user"));
+    const [user, setUser] = useState(localUser);
+
     return (
-        <UserContext.Provider value={{user, setUser, status, setStatus}}>
+        <UserContext.Provider value={{ user, setUser }}>
             {children}
         </UserContext.Provider>
     );

@@ -1,18 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { useUserContext } from "../../contexts/UserContext";
+import { useProgressContext } from "../../contexts/ProgressContext";
+
 
 export default function Menu() {
+    const { user } = useUserContext();
+    const { progress } = useProgressContext();
     const navigate = useNavigate();
+    const percentage = progress;
     return (
-        <Footer>
-            <span onClick={() => navigate("/habitos")}>Hábitos</span>
-            <TodayButton>Hoje</TodayButton>
-            <span onClick={() => navigate("/historico")}>Histórico</span>
-        </Footer>
+        <>
+            {user &&
+                <Footer>
+                    <span onClick={() => navigate("/habitos")}>Hábitos</span>
+                    <TodayButton onClick={() => navigate("/hoje")}>
+                        <CircularProgressbar
+                            value={percentage}
+                            text={`Hoje`}
+                            background
+                            backgroundPadding={6}
+                            styles={buildStyles({
+                                backgroundColor: "#3e98c7",
+                                textColor: "#fff",
+                                pathColor: "#fff",
+                                trailColor: "transparent"
+                            })}
+                        />
+                    </TodayButton>
+                    <span onClick={() => navigate("/historico")}>Histórico</span>
+                </Footer >
+            }
+        </>
     );
 }
 
-const TodayButton = styled.button`
+const TodayButton = styled.div`
     width: 100px;
     height: 100px;
     position: absolute;
@@ -22,11 +47,6 @@ const TodayButton = styled.button`
     right: 0;
     text-align: center;
     bottom: 10%;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    background-color: blue;
-
 `;
 
 const Footer = styled.footer`
@@ -40,6 +60,6 @@ const Footer = styled.footer`
     left: 0; 
     padding: 8px;    
     font-size: 18px;
-    background-color: lightgray;
+    background-color: white;
     color: blue;
 `;

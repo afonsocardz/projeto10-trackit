@@ -3,122 +3,97 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import API from "../API";
 import { useUserContext } from "../contexts/UserContext";
+import { useProgressContext } from "../contexts/ProgressContext";
 
-function DayInput({ day, index, handler }) {
-
+function Progress({ hasProgress }) {
+    const text = "% dos hábitos concluídos";
     return (
-        <Checkbox day={day.letter} id={index} type={"checkbox"} value={day.check} onChange={e => handler(e)} />
+        <>
+            {hasProgress && <Span>{hasProgress}{text}</Span>}
+        </>
     );
 }
 
-const Checkbox = styled.input`
-    ::after{
-        content: '${props => props.day}';
-    }
-`;
-
-const daysObj = [
-    {
-        id: 0,
-        letter: "D",
-        check: false
-    },
-    {
-        id: 1,
-        letter: "S",
-        check: false
-    },
-    {
-        id: 2,
-        letter: "T",
-        check: false
-    },
-    {
-        id: 3,
-        letter: "Q",
-        check: false
-    },
-    {
-        id: 4,
-        letter: "Q",
-        check: false
-    },
-    {
-        id: 5,
-        letter: "S",
-        check: false
-    },
-    {
-        id: 6,
-        letter: "S",
-        check: false
-    },
+function TodayHabit({ user, habit, habits, set }) {
+    const { id, name, done, currentSequence, highestSequence } = habit;
     
-]
+    function habitHandler(e) {
+        const promise = done ? axios.post(`${API}/habits/${id}/uncheck`, id, user.token) : axios.post(`${API}/habits/${id}/check`, id, user.token);
+        promise.then(res => {
+            console.log(done);
+            const newHabits = habits.map(habit => {
+                if (id == habit.id) {
+                    habit["done"] = !done; 
+                    return habit;
+                } else {
+                    return habit;
+                }
+            });
+            set(newHabits);
+        })
+    }
+    return (
+        <>
+            <Container>
+                <span>{name}</span>
+                <span>Sequência {currentSequence}</span>
+                <span>recorde {highestSequence}</span>
+            </Container>
+            <input onChange={habitHandler} type={"checkbox"} defaultChecked={done} />
+        </>
+    );
+}
+
 
 export default function Today() {
     const { user, setUser } = useUserContext();
-    const [days, setDays] = useState(daysObj);
-    const [habitName, setHabitName] = useState("");
-
-    console.log(user);
-
-    const config = {
-        headers: {
-            "Authorization": `Bearer ${user.token}`
-        }
-    }
+    const { setProgress } = useProgressContext();
+    const [todayHabits, setTodayHabits] = useState([]);
 
     useEffect(() => {
-        const promise = axios.get(`${API}/habits`, config)
+        const promise = axios.get(`${API}/habits/today`, user.token)
         promise.then(res => {
             const { data } = res;
-            localStorage.setItem("habits", data)
-            
+            setTodayHabits(data);
         }).catch(err => {
             console.log(err);
         });
-    }, [user]);
+    }, []);
 
-    function addHabit(name, days) {
-        const body = {
-            name,
-            days, // segunda, quarta e sexta
+    function printHabitDone() {
+        if (todayHabits.length !== 0) {
+            const doneHabits = todayHabits.filter(habit => habit.done);
+            if (doneHabits.length !== 0) {
+                const percentage = (doneHabits.length / todayHabits.length) * 100;
+                console.log(percentage);
+                setProgress(percentage);
+                return <Progress hasProgress={percentage} />
+            } else {
+                setProgress(0);
+                return "Nenhum hábito concluído ainda"
+            }
+            
         }
-        const promise = axios.post(`${API}/habits`, body, config);
+        return "Você não tem nenhum hábito ainda"
+    };
 
-        promise.then(res => {
-            const { data } = res;
-            console.log(data);
-            setUser({...user, habits: data});
-        }).catch(err => {
-            console.log(err);
-        })
-    }
-
-    function checkHandler(e) {
-        const target = e.target;
-        const value = target.type === "checkbox" ? target.checked : target.value;
-        console.log(value);
-        const id = target.id;
-        const checkDay = days.map( ({id:userId, letter, check }) => userId == id ? {id:userId, letter:letter, check: value} : {id:userId, letter:letter, check:check});
-        setDays(checkDay);
-    }
-
-    function submitHandler(e){
-        e.preventDefault();
-        const checkedDays = days.filter(({check}) => check === true);
-        addHabit(habitName,checkedDays.map(day => day.id));
-        
-    }
-
-    console.log(days);
+    const doneHabits = printHabitDone();
 
     return (
-        <form onSubmit={submitHandler}>
-            <input value={habitName} onChange={(e) => setHabitName(e.target.value)}/>
-            {days.map((day,index) => <DayInput day={day} index={index} handler={checkHandler} /> )}
-            <button>enviar</button>
-        </form>
+        <Container>
+            <span>{`${"segunda"}, ${"27/05"}`}</span>
+            {doneHabits}
+            {todayHabits.length !== 0 && todayHabits.map(habit => <TodayHabit user={user} habit={habit} habits={todayHabits} set={setTodayHabits} />)}
+        </Container>
     );
 }
+
+const Span = styled.span`
+    color: green;
+`;
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: ${props => props.direction};
+    
+`;

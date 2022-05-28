@@ -9,17 +9,18 @@ import Today from "./pages/Today";
 import "./assets/styles/reset.css";
 import "./assets/styles/style.css";
 import UserContextProvider from "./contexts/UserContext";
-import LoadingContextProvider from "./contexts/LoadingContext";
 import Frame from "./components/styles/Frame";
+import ProgressContextProvider from "./contexts/ProgressContext";
 
 
 export default function App() {
     return (
         <BrowserRouter>
-            <LoadingContextProvider>
-                <UserContextProvider>
-                    <Header />
-                    <Frame>
+
+            <UserContextProvider>
+                <Header />
+                <ProgressContextProvider>
+                <Frame>
                         <Routes>
                             <Route path={"/"} element={<Login />} />
                             <Route path={"/cadastro"} element={<Register />} />
@@ -27,10 +28,11 @@ export default function App() {
                             <Route path={"/habitos"} element={<Habits />} />
                             <Route path={"/historico"} element={<History />} />
                         </Routes>
-                    </Frame>
-                    <Menu />
-                </UserContextProvider>
-            </LoadingContextProvider>
-        </BrowserRouter>
+                </Frame>
+                <Menu />
+            </ProgressContextProvider>
+        </UserContextProvider>
+
+        </BrowserRouter >
     );
 }
