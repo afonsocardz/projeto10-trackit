@@ -16,7 +16,6 @@ import ProgressContextProvider from "./contexts/ProgressContext";
 export default function App() {
     return (
         <BrowserRouter>
-
             <UserContextProvider>
                 <Header />
                 <ProgressContextProvider>

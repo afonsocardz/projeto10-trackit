@@ -2,7 +2,13 @@
 
 body{
     font-family: 'Lexend Deca', sans-serif;
-    
+    height: 100vh; 
+    display: grid;
+    color: #666666;
+}
+
+.root{
+    height: 100%;
 }
 
 * {

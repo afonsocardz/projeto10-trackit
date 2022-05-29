@@ -40,8 +40,9 @@ export default function Login() {
                 email: data.email,
                 token: { headers: { "Authorization": `Bearer ${data.token}` } },
                 isLogged: true,
+                habits: [],
             }
-            setUser( {...obj, password: data.password});
+            setUser(obj);
             localStorage.setItem("user", JSON.stringify(obj));
             //setStatus(false);
             navigate("/hoje")

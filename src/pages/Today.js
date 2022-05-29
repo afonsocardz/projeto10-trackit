@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import API from "../API";
 import { useUserContext } from "../contexts/UserContext";
 import { useProgressContext } from "../contexts/ProgressContext";
+import checkIcon from "../assets/imgs/check-icon.svg"
+import TitlePage from "../components/styles/TitlePage";
 
 function Progress({ hasProgress }) {
     const text = "% dos hábitos concluídos";
@@ -33,14 +35,16 @@ function TodayHabit({ user, habit, habits, set }) {
         })
     }
     return (
-        <>
-            <Container>
+        <Container direction={"row"}>
+            <Container direction={"column"}>
                 <span>{name}</span>
                 <span>Sequência {currentSequence}</span>
                 <span>recorde {highestSequence}</span>
             </Container>
-            <input onChange={habitHandler} type={"checkbox"} defaultChecked={done} />
-        </>
+            <CheckButton onClick={habitHandler} isCheck={done}>
+                <img src={checkIcon} alt={"check icon"}/>
+            </CheckButton>
+        </Container>
     );
 }
 
@@ -64,7 +68,7 @@ export default function Today() {
         if (todayHabits.length !== 0) {
             const doneHabits = todayHabits.filter(habit => habit.done);
             if (doneHabits.length !== 0) {
-                const percentage = (doneHabits.length / todayHabits.length) * 100;
+                const percentage = parseInt((doneHabits.length / todayHabits.length) * 100);
                 console.log(percentage);
                 setProgress(percentage);
                 return <Progress hasProgress={percentage} />
@@ -80,8 +84,8 @@ export default function Today() {
     const doneHabits = printHabitDone();
 
     return (
-        <Container>
-            <span>{`${"segunda"}, ${"27/05"}`}</span>
+        <Container direction={"column"}>
+            <TitlePage>{`${"segunda"}, ${"27/05"}`}</TitlePage>
             {doneHabits}
             {todayHabits.length !== 0 && todayHabits.map(habit => <TodayHabit user={user} habit={habit} habits={todayHabits} set={setTodayHabits} />)}
         </Container>
@@ -95,5 +99,14 @@ const Span = styled.span`
 const Container = styled.div`
     display: flex;
     flex-direction: ${props => props.direction};
-    
+`;
+
+const CheckButton = styled.div`
+    width: 69px;
+    height: 69px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: ${({isCheck}) => isCheck ? "#8FC549" : "#EBEBEB"};
 `;

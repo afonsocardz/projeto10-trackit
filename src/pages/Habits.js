@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import API from "../API";
 import { useUserContext } from "../contexts/UserContext";
+import deleteIcon from '../assets/imgs/delete-icon.svg'
 import styled from "styled-components";
 import Button from "../components/styles/Button";
 import TitlePage from "../components/styles/TitlePage";
@@ -47,9 +48,21 @@ const daysObj = [
 
 ]
 
-function DayInput({ day, index, handler }) {
+function DayInput({ day, handler, status }) {
+    const [isCheck, setIsCheck] = useState();
+    console.log(status)
+
+    function checkDay(status) {
+        setIsCheck(status);
+        handler(status, day.id);
+    }
+
     return (
-        <Checkbox day={day.letter} id={index} type={"checkbox"} value={day.check} onChange={e => handler(e)} />
+        <>
+            <Checkbox isCheck={!status ? isCheck : day.check} isDisable={status} onClick={() => checkDay(!isCheck)}>
+                <span>{day.letter}</span>
+            </Checkbox>
+        </>
     );
 }
 
@@ -63,21 +76,18 @@ function HabitForm({ user, setUser, setDisplay }) {
             days, // segunda, quarta e sexta
         }
         const promise = axios.post(`${API}/habits`, body, user.token);
-
         promise.then(res => {
             const { data } = res;
-            setUser({ ...user, habits: user.habits, data });
+            user.habits.push(data)
+            setUser({ ...user, habits: user.habits });
             setDisplay(false);
         }).catch(err => {
             console.log(err);
         })
     }
 
-    function checkHandler(e) {
-        const target = e.target;
-        const value = target.checked;
-        const id = target.id;
-        const checkDay = days.map(({ id: userId, letter, check }) => userId == id ? { id: userId, letter: letter, check: value } : { id: userId, letter: letter, check: check });
+    function checkHandler(status, id) {
+        const checkDay = days.map(({ id: userId, letter, check }) => userId == id ? { id: userId, letter: letter, check: status } : { id: userId, letter: letter, check: check });
         setDays(checkDay);
     }
 
@@ -88,16 +98,71 @@ function HabitForm({ user, setUser, setDisplay }) {
     }
 
     return (
-        <Container>
-            <FormContainer onSubmit={submitHandler}>
-                <Input value={habitName} onChange={(e) => setHabitName(e.target.value)} />
-                <DaysOptions>
-                    {days.map((day, index) => <DayInput day={day} index={index} handler={checkHandler} />)}
-                </DaysOptions>
+        <FormContainer direction={"column"} onSubmit={submitHandler}>
+            <Input value={habitName} onChange={(e) => setHabitName(e.target.value)} />
+            <DaysOptions>
+                {days.map((day, index) => <DayInput day={day} index={index} handler={checkHandler} />)}
+            </DaysOptions>
+            <AlignLeft>
+                <span onClick={() => setDisplay(false)}>Cancelar</span>
                 <Button width={"84px"} height={"35px"}>Salvar</Button>
-            </FormContainer>
-        </Container>
+            </AlignLeft>
+        </FormContainer>
     );
+}
+
+function OneHabit({ id, name, days, user, setUser }) {
+    const [inputDays, setInputDays] = useState(daysObj);
+    const [display, setDisplay] = useState(false);
+
+    const newDays = inputDays.map(inDay => days.includes(inDay.id) ?
+        { id: inDay.id, letter: inDay.letter, check: true } :
+        { id: inDay.id, letter: inDay.letter, check: false });
+
+    console.log(newDays);
+
+    function deleteHabit(id) {
+        const promise = axios.delete(`${API}/habits/${id}`, user.token);
+        promise.then(res => {
+            const newHabits = user.habits.filter(habit => habit.id !== id)
+            const { status } = res;
+            setUser({ ...user, habits: newHabits });
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    function submitHandler() {
+        deleteHabit(id);
+    }
+
+    return (
+        <>
+            { display && <ConfirmDelete submitHandler={submitHandler} setDisplay={setDisplay}/>}
+            <FormContainer direction={"row"} onSubmit={submitHandler}>
+                <HabitContainer direction={"column"}>
+                    <span>{name}</span>
+                    <DaysOptions>
+                        {newDays.map((day) => <DayInput day={day} status={true} />)}
+                    </DaysOptions>
+                </HabitContainer>
+                <img style={{ marginLeft: "auto", marginBottom: "auto" }} onClick={()=> setDisplay(true)} src={deleteIcon} alt={"Deletar Hábito"} />
+            </FormContainer>
+        </>
+
+    );
+}
+
+function ConfirmDelete({ setDisplay, submitHandler }) {
+    return (
+        <DeleteModal>
+            <span>tem certeza?</span>
+            <button onClick={submitHandler}>sim</button>
+            <button onClick={() => setDisplay(false)}>não </button>
+        </DeleteModal>
+    );
+
 }
 
 export default function Habits() {
@@ -109,30 +174,46 @@ export default function Habits() {
         const promise = axios.get(`${API}/habits`, user.token);
         promise.then(res => {
             const { data } = res;
+            if (data.length !== 0) {
+                if (user.habits.length === 0) setUser({ ...user, habits: data });
+            }
             setHabits(data);
+            console.log(user);
         })
-    }, [])
+    }, [user])
 
     function addHabitForm() {
-        setDisplay(true);
+        setDisplay({ name: "form" });
     }
 
-    function printHabits() {
-
-
-    }
     return (
         <PageContainer>
             <TopContainer className="title">
                 <TitlePage>Meus Hábitos</TitlePage>
                 <Button width={"40px"} height={"36px"} onClick={addHabitForm}>+</Button>
             </TopContainer>
-            {display && <HabitForm user={user} setUser={setUser} setDisplay={setDisplay} />}
+            <Container>
+                {display && <HabitForm user={user} setUser={setUser} setDisplay={setDisplay} />}
+                {habits && habits.map(habit => <OneHabit {...habit} user={user} setUser={setUser} display={display} setDisplay={setDisplay} />)}
+            </Container>
         </PageContainer>
     );
 }
 
-const Checkbox = styled.input`
+const HabitContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const AlignLeft = styled.div`
+    margin-top: 29px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    color: #52B6FF;
+`;
+
+const Checkbox = styled.div`
     width: 30px;
     height: 30px;
     font-size: 20px;
@@ -140,19 +221,13 @@ const Checkbox = styled.input`
     justify-content: center;
     align-items: center;
     border: 1px solid #D4D4D4;
-    :before{
-        
-        color: #DBDBDB;
-        content: '${props => props.day}';
-    }
-    :after{
-
-    }
-
-    :not(:checked),:checked{
-        color: white;
-        background-color:#CFCFCF;
-    }
+    border-radius: 5px;
+    margin-right: 4px;
+    margin-top: 8px;
+    cursor: pointer;
+    pointer-events: ${({ isDisable }) => isDisable ? "none" : "initial"};
+    color: ${({ isCheck }) => isCheck ? "white" : "#DBDBDB"};
+    background-color: ${({ isCheck }) => isCheck ? "#CFCFCF" : "white"};
 `;
 
 const TopContainer = styled.div`
@@ -170,12 +245,24 @@ const PageContainer = styled.div`
 `;
 
 const FormContainer = styled.form`
+    font-size: 20px;
+    width: 340px;
     padding: 18px;
     background-color: white;
     display: flex;
-    flex-direction: column;
+    flex-direction: ${({ direction }) => direction};
 `;
 
 const DaysOptions = styled.div`
     display: flex;
+`;
+
+const DeleteModal = styled.div`
+    position: fixed;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
 `;
