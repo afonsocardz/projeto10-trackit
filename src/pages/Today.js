@@ -2,6 +2,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import API from "../API";
+import dayjs  from 'dayjs';  // load on demand
 import { useUserContext } from "../contexts/UserContext";
 import { useProgressContext } from "../contexts/ProgressContext";
 import checkIcon from "../assets/imgs/check-icon.svg"
@@ -82,10 +83,11 @@ export default function Today() {
     };
 
     const doneHabits = printHabitDone();
+    const weekdays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
     return (
         <Container direction={"column"}>
-            <TitlePage>{`${"segunda"}, ${"27/05"}`}</TitlePage>
+            <TitlePage>{weekdays.find((item, index) => index === dayjs().day())}, {dayjs().format('DD/MM')}</TitlePage>
             {doneHabits}
             {todayHabits.length !== 0 && todayHabits.map(habit => <TodayHabit user={user} habit={habit} habits={todayHabits} set={setTodayHabits} />)}
         </Container>
