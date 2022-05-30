@@ -85,8 +85,15 @@ function HabitForm({ user, setUser, setDisplay }) {
             setUser({ ...user, habits: user.habits });
             setDisplay(false);
             setIsLoading(false);
+            setHabitName("");
+            setDays(daysObj);
         }).catch(err => {
+            const {response} = err;
+            const {data} = response;
+            const {details} = data;
             console.log(err);
+            setIsLoading(false);
+            alert(details[0])
         })
     }
 
@@ -109,7 +116,7 @@ function HabitForm({ user, setUser, setDisplay }) {
             </DaysOptions>
             <AlignLeft>
                 <span onClick={() => setDisplay(false)}>Cancelar</span>
-                <Button width={"84px"} height={"35px"} isLoading={isLoading}>{isLoading ? <ThreeDots color={"white"}  height={"35"}/> : "Salvar"}</Button>
+                <Button width={"84px"} height={"35px"} isLoading={isLoading}>{isLoading ? <ThreeDots color={"white"} height={"35"} /> : "Salvar"}</Button>
             </AlignLeft>
         </FormContainer>
     );
@@ -144,7 +151,7 @@ function OneHabit({ id, name, days, user, setUser }) {
 
     return (
         <>
-            { display && <ConfirmDelete submitHandler={submitHandler} setDisplay={setDisplay}/>}
+            {display && <ConfirmDelete submitHandler={submitHandler} setDisplay={setDisplay} />}
             <FormContainer direction={"row"} onSubmit={submitHandler}>
                 <HabitContainer direction={"column"}>
                     <span>{name}</span>
@@ -152,7 +159,7 @@ function OneHabit({ id, name, days, user, setUser }) {
                         {newDays.map((day) => <DayInput day={day} status={true} />)}
                     </DaysOptions>
                 </HabitContainer>
-                <img style={{ marginLeft: "auto", marginBottom: "auto" }} onClick={()=> setDisplay(true)} src={deleteIcon} alt={"Deletar Hábito"} />
+                <img style={{ marginLeft: "auto", marginBottom: "auto", cursor: "pointer" }} onClick={() => setDisplay(true)} src={deleteIcon} alt={"Deletar Hábito"} />
             </FormContainer>
         </>
 
@@ -162,9 +169,11 @@ function OneHabit({ id, name, days, user, setUser }) {
 function ConfirmDelete({ setDisplay, submitHandler }) {
     return (
         <DeleteModal>
-            <span>tem certeza?</span>
-            <Button  onClick={submitHandler}>sim</Button>
-            <Button onClick={() => setDisplay(false)}>não </Button>
+            <span>Você realmente quer apagar esse hábito?</span>
+            <div style={{ display: "flex" }}>
+                <Button width={"85px"} height={"35px"} onClick={submitHandler}>Sim</Button>
+                <Button width={"85px"} height={"35px"} color={true} onClick={() => setDisplay(false)}>Não</Button>
+            </div>
         </DeleteModal>
     );
 
@@ -198,13 +207,19 @@ export default function Habits() {
                 <Button width={"40px"} height={"36px"} onClick={addHabitForm}>+</Button>
             </TopContainer>
             <Container>
-                {display && <HabitForm user={user} setUser={setUser} setDisplay={setDisplay} />}
-                {habits.length ? habits.map(habit => <OneHabit {...habit} user={user} setUser={setUser} display={display} setDisplay={setDisplay} />) 
-                : <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>}
+                <HiddenForm display={display}>
+                    <HabitForm user={user} setUser={setUser} setDisplay={setDisplay} />
+                </HiddenForm>
+                {habits.length ? habits.map(habit => <OneHabit {...habit} user={user} setUser={setUser} display={display} setDisplay={setDisplay} />)
+                    : <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>}
             </Container>
         </PageContainer>
     );
 }
+
+const HiddenForm = styled.div`
+    display: ${({ display }) => display ? "inherit" : "none"};
+`;
 
 const HabitContainer = styled.div`
     display: flex;
@@ -273,10 +288,19 @@ const DaysOptions = styled.div`
 
 const DeleteModal = styled.div`
     position: fixed;
-    width: 400px;
-    height: 300px;
+    width: 304px;
+    height: 135px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: white;
+    text-align: center;
+    filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.3));
+
+    * {
+        margin: 7px;
+    }
+
+
 `;

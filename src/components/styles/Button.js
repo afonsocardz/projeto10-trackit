@@ -6,7 +6,7 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #52B6FF;
+    background-color: ${({color}) => color ? "red" : "#52B6FF"};
     opacity: ${({isLoading}) => isLoading ? "0.7" : "1"};
     color: white;
     border: none;

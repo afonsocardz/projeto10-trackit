@@ -54,6 +54,11 @@ export default function Login() {
             navigate("/hoje")
         }).catch(err => {
             console.log(err);
+            setIsLoading(false);
+            const { response } = err;
+            const { data } = response;
+            const { message } = data;
+            alert(message);
         });
     };
 
@@ -65,7 +70,7 @@ export default function Login() {
                     <Input isLoading={isLoading} type={"email"} value={email} placeholder={"E-mail"} onChange={(e) => setEmail(e.target.value)} />
                     <Input isLoading={isLoading} type={"password"} security={true} value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
                     <Button width={'303px'} isLoading={isLoading} height={"45px"} fontSize={"21px"}>{isLoading ?
-                        <ThreeDots 
+                        <ThreeDots
                             color='white'
                             ariaLabel='loading' /> :
                         "Entrar"}

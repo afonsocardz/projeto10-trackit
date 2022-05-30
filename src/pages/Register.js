@@ -37,6 +37,11 @@ export default function Register() {
             navigate("/");
         }).catch(err => {
             console.log(err);
+            setIsLoading(false);
+            const { response } = err;
+            const { data } = response;
+            const { details } = data;
+            details.map(detail =>  alert(detail));
         });
     };
 
@@ -44,12 +49,12 @@ export default function Register() {
         <>
             <form onSubmit={handleRegister}>
                 <Container>
-                    <MainLogo/>
+                    <MainLogo />
                     <Input isLoading={isLoading} type={"email"} value={email} placeholder={"Email"} onChange={(e) => setEmail(e.target.value)} />
                     <Input isLoading={isLoading} type={"password"} security={true} value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
                     <Input isLoading={isLoading} value={name} placeholder={"Nome"} onChange={(e) => setName(e.target.value)} />
                     <Input isLoading={isLoading} value={image} placeholder={"Imagem"} onChange={(e) => setImage(e.target.value)} />
-                    <Button width={'303px'} height={"45px"} fontSize={"21px"} isLoading={isLoading}>{isLoading ? <ThreeDots/> : "Registrar"}</Button>
+                    <Button width={'303px'} height={"45px"} fontSize={"21px"} isLoading={isLoading}>{isLoading ? <ThreeDots color={"white"} /> : "Registrar"}</Button>
                     <RegOrLog onClick={() => navigate("/")}>Já tem uma conta? Faça login!</RegOrLog>
                 </Container>
             </form>
