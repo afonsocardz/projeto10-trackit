@@ -8,6 +8,7 @@ export default function UserContextProvider({ children }) {
 
     const localUser = JSON.parse(localStorage.getItem("user"));
     const [user, setUser] = useState(localUser);
+    
 
     return (
         <UserContext.Provider value={{ user, setUser }}>

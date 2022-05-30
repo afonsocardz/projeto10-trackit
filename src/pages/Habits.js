@@ -86,6 +86,7 @@ function HabitForm({ user, setUser, setDisplay }) {
             setDisplay(false);
             setIsLoading(false);
             setHabitName("");
+            setDays("");
             setDays(daysObj);
         }).catch(err => {
             const {response} = err;
@@ -112,7 +113,7 @@ function HabitForm({ user, setUser, setDisplay }) {
         <FormContainer direction={"column"} onSubmit={submitHandler}>
             <Input isLoading={isLoading} value={habitName} onChange={(e) => setHabitName(e.target.value)} />
             <DaysOptions>
-                {days.map((day, index) => <DayInput day={day} index={index} handler={checkHandler} />)}
+                {days && days.map((day, index) => <DayInput day={day} index={index} handler={checkHandler} />)}
             </DaysOptions>
             <AlignLeft>
                 <span onClick={() => setDisplay(false)}>Cancelar</span>
