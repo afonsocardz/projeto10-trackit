@@ -11,19 +11,24 @@ import MainLogo from "../components/MainLogo";
 import RegOrLog from "../components/styles/RegOrLog";
 
 
+import { ThreeDots } from 'react-loader-spinner';
+
+
+
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
+    const [isLoading, setIsLoading] = useState(false);
     const { user, setUser } = useUserContext();
     const navigate = useNavigate();
 
-    useEffect(()=>{
+    useEffect(() => {
         if (user !== null) {
             navigate("/hoje")
         }
-    },[])
-    
+    }, [])
+
     function handleLogin(e) {
         e.preventDefault();
         const body = {
@@ -31,7 +36,7 @@ export default function Login() {
             password
         };
         const promise = axios.post(`${API}/auth/login`, body);
-        //setStatus(true);
+        setIsLoading(true);
         promise.then(res => {
             const { data } = res;
             const obj = {
@@ -45,7 +50,7 @@ export default function Login() {
             }
             setUser(obj);
             localStorage.setItem("user", JSON.stringify(obj));
-            //setStatus(false);
+            setIsLoading(false);
             navigate("/hoje")
         }).catch(err => {
             console.log(err);
@@ -56,10 +61,15 @@ export default function Login() {
         <>
             <form onSubmit={handleLogin}>
                 <Container>
-                    <MainLogo/>
-                    <Input type={"email"} value={email} placeholder={"E-mail"} onChange={(e) => setEmail(e.target.value)} />
-                    <Input type={"password"} security={true} value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
-                    <Button width={'303px'} height={"45px"} fontSize={"21px"}>Entrar</Button>
+                    <MainLogo />
+                    <Input isLoading={isLoading} type={"email"} value={email} placeholder={"E-mail"} onChange={(e) => setEmail(e.target.value)} />
+                    <Input isLoading={isLoading} type={"password"} security={true} value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
+                    <Button width={'303px'} isLoading={isLoading} height={"45px"} fontSize={"21px"}>{isLoading ?
+                        <ThreeDots 
+                            color='white'
+                            ariaLabel='loading' /> :
+                        "Entrar"}
+                    </Button>
                     <RegOrLog onClick={() => navigate("/cadastro")}>Não tem uma conta? Cadastre-se!</RegOrLog>
                 </Container>
             </form>

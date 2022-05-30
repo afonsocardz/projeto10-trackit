@@ -8,6 +8,7 @@ import Button from "../components/styles/Button";
 import TitlePage from "../components/styles/TitlePage";
 import Input from "../components/styles/Input";
 import Container from "../components/styles/Container";
+import { ThreeDots } from "react-loader-spinner";
 
 const daysObj = [
     {
@@ -68,6 +69,7 @@ function DayInput({ day, handler, status }) {
 
 function HabitForm({ user, setUser, setDisplay }) {
     const [habitName, setHabitName] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [days, setDays] = useState(daysObj);
 
     function addHabit(name, days) {
@@ -76,11 +78,13 @@ function HabitForm({ user, setUser, setDisplay }) {
             days, // segunda, quarta e sexta
         }
         const promise = axios.post(`${API}/habits`, body, user.token);
+        setIsLoading(true);
         promise.then(res => {
             const { data } = res;
             user.habits.push(data)
             setUser({ ...user, habits: user.habits });
             setDisplay(false);
+            setIsLoading(false);
         }).catch(err => {
             console.log(err);
         })
@@ -99,13 +103,13 @@ function HabitForm({ user, setUser, setDisplay }) {
 
     return (
         <FormContainer direction={"column"} onSubmit={submitHandler}>
-            <Input value={habitName} onChange={(e) => setHabitName(e.target.value)} />
+            <Input isLoading={isLoading} value={habitName} onChange={(e) => setHabitName(e.target.value)} />
             <DaysOptions>
                 {days.map((day, index) => <DayInput day={day} index={index} handler={checkHandler} />)}
             </DaysOptions>
             <AlignLeft>
                 <span onClick={() => setDisplay(false)}>Cancelar</span>
-                <Button width={"84px"} height={"35px"}>Salvar</Button>
+                <Button width={"84px"} height={"35px"} isLoading={isLoading}>{isLoading ? <ThreeDots color={"white"}  height={"35"}/> : "Salvar"}</Button>
             </AlignLeft>
         </FormContainer>
     );
@@ -159,8 +163,8 @@ function ConfirmDelete({ setDisplay, submitHandler }) {
     return (
         <DeleteModal>
             <span>tem certeza?</span>
-            <button onClick={submitHandler}>sim</button>
-            <button onClick={() => setDisplay(false)}>não </button>
+            <Button  onClick={submitHandler}>sim</Button>
+            <Button onClick={() => setDisplay(false)}>não </Button>
         </DeleteModal>
     );
 

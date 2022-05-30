@@ -8,6 +8,7 @@ import Container from "../components/styles/Container";
 import Input from "../components/styles/Input";
 import RegOrLog from "../components/styles/RegOrLog";
 import { useUserContext } from "../contexts/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function Register() {
     const { status, setStatus } = useUserContext();
@@ -15,6 +16,7 @@ export default function Register() {
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -27,11 +29,11 @@ export default function Register() {
             password
         };
         const promise = axios.post(`${API}/auth/sign-up`, body);
-        setStatus(true);
+        setIsLoading(true);
         promise.then(res => {
             const { data } = res;
             console.log(data);
-            setStatus(false);
+            setIsLoading(false);
             navigate("/");
         }).catch(err => {
             console.log(err);
@@ -43,11 +45,11 @@ export default function Register() {
             <form onSubmit={handleRegister}>
                 <Container>
                     <MainLogo/>
-                    <Input type={"email"} value={email} placeholder={"Email"} onChange={(e) => setEmail(e.target.value)} />
-                    <Input type={"password"} security={true} value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
-                    <Input value={name} placeholder={"Nome"} onChange={(e) => setName(e.target.value)} />
-                    <Input value={image} placeholder={"Imagem"} onChange={(e) => setImage(e.target.value)} />
-                    <Button width={'303px'} height={"45px"} fontSize={"21px"}>Registrar</Button>
+                    <Input isLoading={isLoading} type={"email"} value={email} placeholder={"Email"} onChange={(e) => setEmail(e.target.value)} />
+                    <Input isLoading={isLoading} type={"password"} security={true} value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
+                    <Input isLoading={isLoading} value={name} placeholder={"Nome"} onChange={(e) => setName(e.target.value)} />
+                    <Input isLoading={isLoading} value={image} placeholder={"Imagem"} onChange={(e) => setImage(e.target.value)} />
+                    <Button width={'303px'} height={"45px"} fontSize={"21px"} isLoading={isLoading}>{isLoading ? <ThreeDots/> : "Registrar"}</Button>
                     <RegOrLog onClick={() => navigate("/")}>Já tem uma conta? Faça login!</RegOrLog>
                 </Container>
             </form>

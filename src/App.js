@@ -13,6 +13,7 @@ import Frame from "./components/styles/Frame";
 import ProgressContextProvider from "./contexts/ProgressContext";
 
 
+
 export default function App() {
     return (
         <BrowserRouter>
