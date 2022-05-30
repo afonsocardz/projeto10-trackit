@@ -12,11 +12,12 @@ import RegOrLog from "../components/styles/RegOrLog";
 
 
 import { ThreeDots } from 'react-loader-spinner';
+import Frame from "../components/styles/Frame";
 
 
 
 
-export default function Login({setIsLogged}) {
+export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +51,6 @@ export default function Login({setIsLogged}) {
             setUser(obj);
             localStorage.setItem("user", JSON.stringify(obj));
             setIsLoading(false);
-            setIsLogged(true);
             navigate("/hoje")
         }).catch(err => {
             console.log(err);
@@ -63,7 +63,7 @@ export default function Login({setIsLogged}) {
     };
 
     return (
-        <>
+        <Frame isLogged={false}>
             <form onSubmit={handleLogin}>
                 <Container>
                     <MainLogo />
@@ -78,7 +78,7 @@ export default function Login({setIsLogged}) {
                     <RegOrLog onClick={() => navigate("/cadastro")}>Não tem uma conta? Cadastre-se!</RegOrLog>
                 </Container>
             </form>
-        </>
+        </Frame>
     );
 }
 

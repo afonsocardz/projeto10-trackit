@@ -7,6 +7,7 @@ import { useUserContext } from "../contexts/UserContext";
 import { useProgressContext } from "../contexts/ProgressContext";
 import checkIcon from "../assets/imgs/check-icon.svg"
 import TitlePage from "../components/styles/TitlePage";
+import Frame from "../components/styles/Frame";
 
 function Progress({ hasProgress }) {
     const text = "% dos hábitos concluídos";
@@ -104,7 +105,7 @@ export default function Today() {
     const weekdays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
     return (
-        <>
+        <Frame isLogged={true} >
             <TopContainer>
                 <TitlePage>{weekdays.find((item, index) => index === dayjs().day())}, {dayjs().format('DD/MM')}</TitlePage>
                 {doneHabits}
@@ -112,7 +113,7 @@ export default function Today() {
             <Container direction={"column"}>
                 {todayHabits.length !== 0 && todayHabits.map(habit => <TodayHabit user={user} habit={habit} habits={todayHabits} setHabits={setTodayHabits} />)}
             </Container>
-        </>
+        </Frame>
     );
 }
 

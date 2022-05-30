@@ -9,6 +9,7 @@ import Input from "../components/styles/Input";
 import RegOrLog from "../components/styles/RegOrLog";
 import { useUserContext } from "../contexts/UserContext";
 import { ThreeDots } from "react-loader-spinner";
+import Frame from "../components/styles/Frame";
 
 export default function Register() {
     const { status, setStatus } = useUserContext();
@@ -46,7 +47,7 @@ export default function Register() {
     };
 
     return (
-        <>
+        <Frame isLogged={false}>
             <form onSubmit={handleRegister}>
                 <Container>
                     <MainLogo />
@@ -58,6 +59,6 @@ export default function Register() {
                     <RegOrLog onClick={() => navigate("/")}>Já tem uma conta? Faça login!</RegOrLog>
                 </Container>
             </form>
-        </>
+        </Frame>
     );
 }

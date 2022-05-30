@@ -9,6 +9,7 @@ import TitlePage from "../components/styles/TitlePage";
 import Input from "../components/styles/Input";
 import Container from "../components/styles/Container";
 import { ThreeDots } from "react-loader-spinner";
+import Frame from "../components/styles/Frame";
 
 const daysObj = [
     {
@@ -89,9 +90,9 @@ function HabitForm({ user, setUser, setDisplay }) {
             setDays("");
             setDays(daysObj);
         }).catch(err => {
-            const {response} = err;
-            const {data} = response;
-            const {details} = data;
+            const { response } = err;
+            const { data } = response;
+            const { details } = data;
             console.log(err);
             setIsLoading(false);
             alert(details[0])
@@ -202,19 +203,21 @@ export default function Habits() {
     }
 
     return (
-        <PageContainer>
-            <TopContainer className="title">
-                <TitlePage>Meus Hábitos</TitlePage>
-                <Button width={"40px"} height={"36px"} onClick={addHabitForm}>+</Button>
-            </TopContainer>
-            <Container>
-                <HiddenForm display={display}>
-                    <HabitForm user={user} setUser={setUser} setDisplay={setDisplay} />
-                </HiddenForm>
-                {habits.length ? habits.map(habit => <OneHabit {...habit} user={user} setUser={setUser} display={display} setDisplay={setDisplay} />)
-                    : <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>}
-            </Container>
-        </PageContainer>
+        <Frame isLogged={true} >
+            <PageContainer>
+                <TopContainer className="title">
+                    <TitlePage>Meus Hábitos</TitlePage>
+                    <Button width={"40px"} height={"36px"} onClick={addHabitForm}>+</Button>
+                </TopContainer>
+                <Container>
+                    <HiddenForm display={display}>
+                        <HabitForm user={user} setUser={setUser} setDisplay={setDisplay} />
+                    </HiddenForm>
+                    {habits.length ? habits.map(habit => <OneHabit {...habit} user={user} setUser={setUser} display={display} setDisplay={setDisplay} />)
+                        : <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>}
+                </Container>
+            </PageContainer>
+        </Frame>
     );
 }
 

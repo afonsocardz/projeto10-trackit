@@ -16,21 +16,20 @@ import ProgressContextProvider from "./contexts/ProgressContext";
 
 
 export default function App() {
-    const [isLogged, setIsLogged] = useState(false);
     return (
         <BrowserRouter>
             <UserContextProvider>
                 <Header />
                 <ProgressContextProvider>
-                <Frame isLogged={isLogged}>
+                
                         <Routes>
-                            <Route path={"/"} element={<Login setIsLogged={setIsLogged} />} />
+                            <Route path={"/"} element={<Login  />} />
                             <Route path={"/cadastro"} element={<Register />} />
                             <Route path={"/hoje"} element={<Today />} />
                             <Route path={"/habitos"} element={<Habits />} />
                             <Route path={"/historico"} element={<History />} />
                         </Routes>
-                </Frame>
+               
                 <Menu />
             </ProgressContextProvider>
         </UserContextProvider>
