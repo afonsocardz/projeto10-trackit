@@ -273,7 +273,7 @@ const PageContainer = styled.div`
 
 const FormContainer = styled.form`
     font-size: 20px;
-    width: 340px;
+    width: 100%;
     padding: 18px;
     margin-bottom: 10px;
     border-radius: 5px;

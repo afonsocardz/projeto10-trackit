@@ -53,13 +53,13 @@ function TodayHabit({ user, habit, habits, setHabits }) {
     }
     return (
         <FormContainer direction={"row"} >
-            <Container direction={"column"}>
+            <div>
                 <HabitTitle>{name}</HabitTitle>
                 <SequenceContainer>
                     <span>Sequência atual: <SequenceChanges isChange={current}>{currentSequence} dias</SequenceChanges></span>
                     <span>Seu recorde: <SequenceChanges isChange={highest}>{highestSequence} dias</SequenceChanges></span>
                 </SequenceContainer>
-            </Container>
+            </div>
             <CheckButton onClick={habitHandler} isCheck={done}>
                 <img src={checkIcon} alt={"check icon"} />
             </CheckButton>
@@ -147,11 +147,12 @@ const Container = styled.div`
     display: flex;
     flex-direction: ${props => props.direction};
     color: #666666;
+    width: 100%;
 `;
 
 const FormContainer = styled.form`
     font-size: 20px;
-    width: 340px;
+    width: 100%;
     padding: 18px;
     margin-bottom: 10px;
     border-radius: 5px;
