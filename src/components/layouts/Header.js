@@ -46,9 +46,9 @@ const Topbar = styled.header`
     position: fixed;
     top: 0;
     left: 0; 
-    padding: 8px;    
+    padding: 11px 17px;    
     font-size: 34px;
-    background-color: blue;
+    background-color: #126BA5;
     color: white;
 `;
 

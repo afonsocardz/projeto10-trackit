@@ -23,7 +23,7 @@ export default function Menu() {
                             background
                             backgroundPadding={6}
                             styles={buildStyles({
-                                backgroundColor: "#3e98c7",
+                                backgroundColor: "#52B6FF",
                                 textColor: "#fff",
                                 pathColor: "#fff",
                                 trailColor: "transparent"
@@ -47,6 +47,7 @@ const TodayButton = styled.div`
     right: 0;
     text-align: center;
     bottom: 10%;
+    cursor: pointer;
 `;
 
 const Footer = styled.footer`
@@ -61,5 +62,5 @@ const Footer = styled.footer`
     padding: 8px;    
     font-size: 18px;
     background-color: white;
-    color: blue;
+    color: #52B6FF;
 `;

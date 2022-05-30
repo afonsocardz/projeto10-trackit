@@ -127,6 +127,7 @@ function OneHabit({ id, name, days, user, setUser }) {
             const newHabits = user.habits.filter(habit => habit.id !== id)
             const { status } = res;
             setUser({ ...user, habits: newHabits });
+            setDisplay(false);
             console.log(res);
         }).catch(err => {
             console.log(err);
@@ -167,7 +168,7 @@ function ConfirmDelete({ setDisplay, submitHandler }) {
 
 export default function Habits() {
     const { user, setUser } = useUserContext();
-    const [habits, setHabits] = useState(null);
+    const [habits, setHabits] = useState([]);
     const [display, setDisplay] = useState(false);
 
     useEffect(() => {
@@ -194,7 +195,8 @@ export default function Habits() {
             </TopContainer>
             <Container>
                 {display && <HabitForm user={user} setUser={setUser} setDisplay={setDisplay} />}
-                {habits && habits.map(habit => <OneHabit {...habit} user={user} setUser={setUser} display={display} setDisplay={setDisplay} />)}
+                {habits.length ? habits.map(habit => <OneHabit {...habit} user={user} setUser={setUser} display={display} setDisplay={setDisplay} />) 
+                : <span>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</span>}
             </Container>
         </PageContainer>
     );
@@ -211,6 +213,11 @@ const AlignLeft = styled.div`
     justify-content: end;
     align-items: center;
     color: #52B6FF;
+
+    span{
+        font-size: 16px;
+        margin-right: 23px;
+    }
 `;
 
 const Checkbox = styled.div`
@@ -235,6 +242,7 @@ const TopContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 `
 
 const PageContainer = styled.div`
@@ -248,6 +256,8 @@ const FormContainer = styled.form`
     font-size: 20px;
     width: 340px;
     padding: 18px;
+    margin-bottom: 10px;
+    border-radius: 5px;
     background-color: white;
     display: flex;
     flex-direction: ${({ direction }) => direction};
