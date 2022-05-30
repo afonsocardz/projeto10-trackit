@@ -50,6 +50,7 @@ const Topbar = styled.header`
     font-size: 34px;
     background-color: #126BA5;
     color: white;
+    filter:  drop-shadow(0 4px 4px rgba(0,0,0,0.3));
 `;
 
 const Logo = styled.span`

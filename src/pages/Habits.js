@@ -112,7 +112,7 @@ function HabitForm({ user, setUser, setDisplay }) {
 
     return (
         <FormContainer direction={"column"} onSubmit={submitHandler}>
-            <Input isLoading={isLoading} value={habitName} onChange={(e) => setHabitName(e.target.value)} />
+            <Input isLoading={isLoading} value={habitName} placeholder={"nome do Hábito"} onChange={(e) => setHabitName(e.target.value)} />
             <DaysOptions>
                 {days && days.map((day, index) => <DayInput day={day} index={index} handler={checkHandler} />)}
             </DaysOptions>

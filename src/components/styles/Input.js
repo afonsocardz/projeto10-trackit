@@ -7,6 +7,9 @@ const Input = styled.input`
     border: 2px solid #D4D4D4;
     padding: 12px;
     margin-bottom: 6px;
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 19.98px;
+    color:#666666;
     background-color: ${({isLoading}) => isLoading ? "#F2F2F2" : "white"};
     pointer-events: ${({isLoading}) => isLoading ? "none" : "initial"};
 

@@ -15,7 +15,7 @@ export default function Menu() {
         <>
             {user &&
                 <Footer>
-                    <span onClick={() => navigate("/habitos")}>Hábitos</span>
+                    <span style={{cursor: "pointer"}} onClick={() => navigate("/habitos")}>Hábitos</span>
                     <TodayButton onClick={() => navigate("/hoje")}>
                         <CircularProgressbar
                             value={percentage}
@@ -30,7 +30,7 @@ export default function Menu() {
                             })}
                         />
                     </TodayButton>
-                    <span onClick={() => navigate("/historico")}>Histórico</span>
+                    <span style={{cursor: "pointer"}}  onClick={() => navigate("/historico")}>Histórico</span>
                 </Footer >
             }
         </>
@@ -59,7 +59,7 @@ const Footer = styled.footer`
     position: fixed;
     bottom: 0;
     left: 0; 
-    padding: 8px;    
+    padding: 17px;    
     font-size: 18px;
     background-color: white;
     color: #52B6FF;
