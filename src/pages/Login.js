@@ -8,6 +8,7 @@ import Input from "../components/styles/Input";
 import Container from "../components/styles/Container";
 import Button from "../components/styles/Button";
 import MainLogo from "../components/MainLogo";
+import RegOrLog from "../components/styles/RegOrLog";
 
 
 
@@ -56,9 +57,10 @@ export default function Login() {
             <form onSubmit={handleLogin}>
                 <Container>
                     <MainLogo/>
-                    <Input value={email} placeholder={"E-mail"} onChange={(e) => setEmail(e.target.value)} />
-                    <Input value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
+                    <Input type={"email"} value={email} placeholder={"E-mail"} onChange={(e) => setEmail(e.target.value)} />
+                    <Input type={"password"} security={true} value={password} placeholder={"Senha"} onChange={(e) => setPassword(e.target.value)} />
                     <Button width={'303px'} height={"45px"} fontSize={"21px"}>Entrar</Button>
+                    <RegOrLog onClick={() => navigate("/cadastro")}>Não tem uma conta? Cadastre-se!</RegOrLog>
                 </Container>
             </form>
         </>
