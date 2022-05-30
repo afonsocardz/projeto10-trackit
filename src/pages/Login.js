@@ -16,7 +16,7 @@ import { ThreeDots } from 'react-loader-spinner';
 
 
 
-export default function Login() {
+export default function Login({setIsLogged}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false);
@@ -45,12 +45,12 @@ export default function Login() {
                 image: data.image,
                 email: data.email,
                 token: { headers: { "Authorization": `Bearer ${data.token}` } },
-                isLogged: true,
                 habits: [],
             }
             setUser(obj);
             localStorage.setItem("user", JSON.stringify(obj));
             setIsLoading(false);
+            setIsLogged(true);
             navigate("/hoje")
         }).catch(err => {
             console.log(err);

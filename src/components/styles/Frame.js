@@ -9,7 +9,7 @@ const Frame = styled.div`
     margin-top: 84px;
     margin-bottom: 70px;
     padding: 17px;
-    background-color: ${localStorage.getItem("user") !== null ? "#f2f2f2" : "white"};
+    background-color: ${({isLogged}) => isLogged  ? "#f2f2f2" : "white"};
 `;
 
 export default Frame;

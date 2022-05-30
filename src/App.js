@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {useState} from "react";
 import Header from "./components/layouts/Header";
 import Menu from "./components/layouts/Menu";
 import Habits from "./pages/Habits";
@@ -15,14 +16,15 @@ import ProgressContextProvider from "./contexts/ProgressContext";
 
 
 export default function App() {
+    const [isLogged, setIsLogged] = useState(false);
     return (
         <BrowserRouter>
             <UserContextProvider>
                 <Header />
                 <ProgressContextProvider>
-                <Frame>
+                <Frame isLogged={isLogged}>
                         <Routes>
-                            <Route path={"/"} element={<Login />} />
+                            <Route path={"/"} element={<Login setIsLogged={setIsLogged} />} />
                             <Route path={"/cadastro"} element={<Register />} />
                             <Route path={"/hoje"} element={<Today />} />
                             <Route path={"/habitos"} element={<Habits />} />
